@@ -9,15 +9,13 @@ from datetime import datetime
 app=FastAPI()
 
 class note(BaseModel):
-    ID: int
+    ID: Optional[int] = 1
     title: str
-    content: str
+    Content: str
     Created_at: datetime = Field(default_factory=datetime.now)
     updated_at: Optional[datetime] = None
-    tags: Optional[List[str]] = None
-    user_id: Optional[int] = None
+    Tags: Optional[List[str]] = None
     status: bool = Field(default="False")
-    priority: Optional[int] = None
 
 """
 ID (unique identifier)
@@ -74,8 +72,3 @@ async def Singlenote(id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"There is no data with ID: {id}")
     return {"data": data}
 
-
-
-@app.post("/notes")
-async def create_note(post):
-    return None
