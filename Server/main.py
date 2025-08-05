@@ -15,7 +15,7 @@ class note(BaseModel):
     Created_at: datetime = Field(default_factory=datetime.now)
     updated_at: Optional[datetime] = None
     Tags: Optional[List[str]] = None
-    status: bool = Field(default="False")
+    Status: bool = Field(default="False")
 
 """
 ID (unique identifier)
@@ -72,3 +72,10 @@ async def Singlenote(id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"There is no data with ID: {id}")
     return {"data": data}
 
+
+
+@app.post("/notes")
+async def create_note(notedata:note):
+    notedata.ID+=len(notes_data)
+    notes_data.append(notedata.dict())
+    return {"data": "Note created successfully"}
