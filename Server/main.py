@@ -15,7 +15,7 @@ class note(BaseModel):
     Created_at: datetime = Field(default_factory=datetime.now)
     updated_at: Optional[datetime] = None
     Tags: Optional[List[str]] = None
-    Status: bool = Field(default="False")
+    Status: bool = Field(default=False)
 
 """
 ID (unique identifier)
@@ -49,7 +49,7 @@ def root():
     return "Hello world"
 
 
-@app.get("/notes-list")
+@app.get("/notes")
 async def notes_list():
     data=[
     {
@@ -65,7 +65,7 @@ async def notes_list():
 
 
 
-@app.get("/notes-list/{id}")
+@app.get("/notes/{id}")
 async def Singlenote(id: int):
     data=[{"id":note["ID"],"title":note["title"],"Content":note["Content"], "tag": note["Tags"] ,"created_at": note["Created_at"]} for note in notes_data if note["ID"]==id]
     if not data:
@@ -82,9 +82,9 @@ async def create_note(notedata:note):
 
 
 
-@app.put("/notes")
-async def update_note(notedata:note):
-    update_data=next((n for n in notes_data if n["ID"]==notedata.ID), None)
+@app.put("/notes/{id}")
+async def update_note(notedata:note,id: int):
+    update_data=next((n for n in notes_data if n["ID"]==id), None)
     if update_data:
         update_data["title"]=notedata.title
         update_data["Content"]=notedata.Content
